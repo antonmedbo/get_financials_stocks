@@ -1,23 +1,24 @@
 from datetime import datetime
+from dateutil.relativedelta import relativedelta
 
-def is_date(string, date_format="%b. %d, %Y"):
+def get_date(string, date_format="%b. %d, %Y"):
     try:
         datetime.strptime(string, date_format)
-        return True
+        return datetime.strptime(string, date_format)
     except ValueError:
         return False
     
-def three_or_six_months(string):
+def three_months(string):
     string = string.lower()
     try: 
         if "three" in string:
-            return "three_months"
-        if "six" in string:
-            return "six_months"
+            return "three"
+        elif "six" in string:
+            return "six"
         else:
-            return
+            return False
     except:
-        return
+        return False
 
 def which_metric(string):
 
@@ -73,27 +74,17 @@ def which_metric(string):
         return "Loss from discontinued operations, net of tax"
     if "Net income".lower() in string.lower():
         return "Net income"
-    if "Basic earnings per share attributable to ABB shareholders:".lower() in string.lower():
-        return "Basic earnings per share attributable to ABB shareholders:"
-    if "Income from continuing operations, net of tax".lower() in string.lower():
-        return "Income from continuing operations, net of tax"
-    if "Loss from discontinued operations, net of tax".lower() in string.lower():
-        return "Loss from discontinued operations, net of tax"
-    if "Net income".lower() in string.lower():
-        return "Net income"
-    if "Diluted earnings per share attributable to ABB shareholders:".lower() in string.lower():
-        return "Diluted earnings per share attributable to ABB shareholders:"
-    if "Income from continuing operations, net of tax".lower() in string.lower():
-        return "Income from continuing operations, net of tax"
-    if "Loss from discontinued operations, net of tax".lower() in string.lower():
-        return "Loss from discontinued operations, net of tax"
-    if "Net income".lower() in string.lower():
-        return "Net income"
     if "Weighted-average number of shares outstanding (in millions) used to compute:".lower() in string.lower():
         return "Weighted-average number of shares outstanding (in millions) used to compute:"
-    if "Basic earnings per share attributable to ABB shareholders".lower() in string.lower():
-        return "Basic earnings per share attributable to ABB shareholders"
-    if "Diluted earnings per share attributable to ABB shareholders".lower() in string.lower():
-        return "Diluted earnings per share attributable to ABB shareholders"
     else:
-        print(string," ------------------------not in algo")
+        return
+    
+def get_multiplier(sheet):
+
+    for row in sheet.iter_rows(values_only=True):
+        for i in row:
+            if isinstance(i, str):
+                if "millions" in i.lower(): 
+                    return 1000000
+                else: 
+                    continue
