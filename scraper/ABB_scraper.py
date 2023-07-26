@@ -7,6 +7,8 @@ from extracter.get_data import from_excel
 # Get the webpage
 
 def get_excel_files_ABB():
+
+    list_income_statements = []
     response = requests.get("https://global.abb/group/en/investors/quarterly-results")
     soup = BeautifulSoup(response.content, 'html.parser')
 
@@ -32,4 +34,10 @@ def get_excel_files_ABB():
 
         # For example, print out the values of the first sheet
         sheet = workbook.active
-        from_excel(sheet, file_name)
+
+        income_statement = from_excel(sheet, file_name)
+
+        
+        list_income_statements.append(from_excel(sheet, file_name))
+  
+    return list_income_statements

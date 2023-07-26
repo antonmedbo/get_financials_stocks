@@ -3,20 +3,22 @@ import psycopg2
 from utils.check import get_date, three_months, which_metric, get_multiplier
 from pprint import pprint
 from utils.check_document_name import year_from_name
+from dateutil.relativedelta import relativedelta
 
 
 def from_excel(sheet, file_name):
-
-    print(type(sheet))
     
     position_three_months = None
     position_six_months = None
 
     income_statement = {}
+    end_date = ""
+    income_statement["start_date"] = "" 
+    income_statement["end_date"] = ""
 
-    year = year_from_name(file_name)
+    year = int(year_from_name(file_name))
 
-    mulitplier = get_multiplier(sheet)
+    multiplier = get_multiplier(sheet)
 
     for row in sheet.iter_rows(values_only=True):
 
@@ -32,24 +34,24 @@ def from_excel(sheet, file_name):
         #fix this to make sure the correct value is always reterieved. 
 
     for row in sheet.iter_rows(values_only=True):
-        for i, value in enumerate(row): 
+        for i, value in enumerate(row):
             if isinstance(value, str):
                 if get_date(value) != False:
-                    if get_date(value).year == 2023:
-                        print(get_date(value), i, position_three_months)   
+                    if get_date(value).year == year:
+                        end_date = get_date(value) 
 
-    if position_three_months:
+    if position_three_months and end_date:
+        income_statement["start_date"] = end_date - relativedelta(months=3)
+        income_statement["end_date"] = end_date
         for row in sheet.iter_rows(values_only=True):
             metric = ""
             for i in row: 
                 if isinstance(i, str):
                     metric = which_metric(i) 
                     if isinstance(row[position_three_months], int):
-                        income_statement[metric] = row[position_three_months] * mulitplier
-                        
-
-
-    pprint(income_statement)
+                        income_statement[metric] = row[position_three_months] * multiplier
+    
+    return(income_statement)
 
 
 
