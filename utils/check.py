@@ -80,7 +80,8 @@ def which_metric(string):
         return
     
 def get_multiplier(sheet):
-
+    print(type(sheet))
+    
     for row in sheet.iter_rows(values_only=True):
         for i in row:
             if isinstance(i, str):
