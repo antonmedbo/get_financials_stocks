@@ -21,7 +21,8 @@ def three_months(string):
         return False
 
 def which_metric(string):
-
+    if "Cost of sales of products".lower() in string.lower():
+        return "Cost of sales of products"
     if "sales of products".lower() in string.lower():
         return "sales of products"
     if "Sales of services and other".lower() in string.lower():
@@ -30,8 +31,6 @@ def which_metric(string):
         return "Total cost of sales"
     if "Total revenues".lower() in string.lower():
         return "Total revenues"
-    if "Cost of sales of products".lower() in string.lower():
-        return "Cost of sales of products"
     if "Cost of services and other".lower() in string.lower():
         return "Cost of services and other"
     if "Gross profit".lower() in string.lower():

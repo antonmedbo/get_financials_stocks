@@ -41,7 +41,7 @@ def from_excel(sheet, file_name):
                         end_date = get_date(value) 
 
     if position_three_months and end_date:
-        income_statement["start_date"] = end_date - relativedelta(months=3)
+        income_statement["start_date"] = end_date - relativedelta(months=3) + relativedelta(days=1)
         income_statement["end_date"] = end_date
         for row in sheet.iter_rows(values_only=True):
             metric = ""
