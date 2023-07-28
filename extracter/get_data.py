@@ -6,7 +6,7 @@ from utils.check_document_name import year_from_name
 from dateutil.relativedelta import relativedelta
 
 
-def from_excel(sheet, file_name):
+def from_excel(sheet, year):
     
     position_three_months = None
     position_six_months = None
@@ -16,7 +16,7 @@ def from_excel(sheet, file_name):
     income_statement["start_date"] = "" 
     income_statement["end_date"] = ""
 
-    year = int(year_from_name(file_name))
+    year = int(year)
 
     multiplier = get_multiplier(sheet)
 

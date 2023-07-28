@@ -9,7 +9,7 @@ from datetime import datetime
 from insert_into_postgres.insert import add_financial_statement
 
 list_income_statements = get_excel_files_ABB()
-
+print(list_income_statements)
 def datetime_converter(o):
     if isinstance(o, datetime):
         return o.isoformat()
