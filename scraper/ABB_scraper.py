@@ -4,7 +4,7 @@ import requests
 from bs4 import BeautifulSoup
 from openpyxl import load_workbook
 from zipfile import BadZipFile
-from extracter.get_data import from_excel
+from extractor.get_data import from_excel
 
 def get_excel_files(company_config):
     list_income_statements = []
@@ -22,8 +22,6 @@ def get_excel_files(company_config):
 
         parent_tr = link.find_parent('tr')
         year = parent_tr.find('td').get_text(strip=True).split(' ')[1]
-
-        print(url)
 
         response = requests.get(url)
         content = response.content

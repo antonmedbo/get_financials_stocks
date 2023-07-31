@@ -2,7 +2,7 @@ import io
 import requests
 from bs4 import BeautifulSoup
 from openpyxl import load_workbook
-from extracter.get_data import from_excel
+from extractor.get_data import from_excel
 
 
 list_income_statements = []
