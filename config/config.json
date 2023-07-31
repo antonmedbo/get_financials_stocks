@@ -1,0 +1,7 @@
+{
+    "ABB": {
+        "results_url": "https://global.abb/group/en/investors/quarterly-results",
+        "base_url": "https://global.abb.com",
+        "link_pattern": "xlsx"
+    }
+}
