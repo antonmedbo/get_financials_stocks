@@ -16,8 +16,7 @@ with open("config/config.json") as config_file:
 for company, config in configs.items():
     print(f"Getting data for {company}...")
     list_income_statements = get_excel_files(config)
-
-print(list_income_statements)
+    
 def datetime_converter(o):
     if isinstance(o, datetime):
         return o.isoformat()

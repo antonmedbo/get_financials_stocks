@@ -19,7 +19,7 @@ for link in links:
     if url.startswith("/"):
         url = "https://global.abb.com" + url
 
-    print(url)
+    
     
     
     # # Get the content of the excel file

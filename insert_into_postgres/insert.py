@@ -7,7 +7,11 @@ def get_company_id(cur, company_name):
     select_query = "SELECT id FROM companies WHERE name = %s"
     cur.execute(select_query, (company_name,))
     result = cur.fetchone()
-    return result[0] if result else None
+    if result:
+        return result[0]
+    else:
+        print(f"No company found with name: {company_name}")
+        return None
 
 def parse_data(data, company_id):
     # Check for empty date strings and skip the entry if found
