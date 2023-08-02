@@ -1,40 +1,52 @@
-import io
-import requests
+from pprint import pprint
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
-from openpyxl import load_workbook
-from extractor.get_data import from_excel
+import re
 
+# Automatically download and install chromedriver
+webdriver_path = ChromeDriverManager().install()
 
-list_income_statements = []
-response = requests.get("https://global.abb/group/en/investors/quarterly-results")
-soup = BeautifulSoup(response.content, 'html.parser')
+# Define the path to the Chrome application
+chrome_app_path = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
 
-# Fetch all the links that contain 'XLSX' in their text
-links = soup.find_all('a', text=lambda text: text and "xlsx" in text.lower())
+# Define options for Chrome
+chrome_options = Options()
+chrome_options.binary_location = chrome_app_path
 
+# Define the service
+webdriver_service = Service(webdriver_path)
+
+# Create new instance of chrome
+driver = webdriver.Chrome(service=webdriver_service, options=chrome_options)
+
+url = 'https://www.alfalaval.se/investerare/publikationer/kvartalsinformation/'
+
+# get the page
+driver.get(url)
+
+# let JavaScript load
+driver.implicitly_wait(10)  # waits up to 10 seconds for elements to appear
+
+html = driver.page_source
+
+# parse with BeautifulSoup
+soup = BeautifulSoup(html, 'html.parser')
+
+pattern = re.compile(r'https://www.alfalaval.com/globalassets/documents/.*\.xlsx')
+
+links = soup.find_all('a', href=pattern)
+
+# write to a HTML file
+with open('output.html', 'w', encoding='utf-8') as file:
+    file.write(soup.prettify())
+# define the pattern of the URL we are interested in
+
+# print the matching links
 for link in links:
-    url = link['href']
+    print(link['href'])
 
-    # Some links might be relative, so we need to make them absolute
-    if url.startswith("/"):
-        url = "https://global.abb.com" + url
-
-    
-    
-    
-    # # Get the content of the excel file
-    # response = requests.get(url)
-    # content = response.content
-
-    # file_name = url.split("/")[-1]
-
-    # # Load the workbook into memory
-    # workbook = load_workbook(filename=io.BytesIO(content))
-
-    # # For example, print out the values of the first sheet
-    # sheet = workbook.active
-
-    # income_statement = from_excel(sheet, file_name)
-
-    # list_income_statements.append(income_statement)
-
+# quit the driver
+driver.quit()
