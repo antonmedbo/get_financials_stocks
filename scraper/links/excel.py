@@ -17,13 +17,12 @@ def get_data_from_xlsx(url, company, config, year):
     try:
         print(url)
         workbook = load_workbook(filename=io.BytesIO(content))
-        sheet = workbook.active
 
         index_quarters = quarters(workbook)
         
         index_metrics = metrics(company, workbook)
 
-        income_statements_dataframe = from_sheet(index_quarters, index_metrics, workbook)
+        income_statements_dataframe = from_sheet(company, index_quarters, index_metrics, workbook)
 
     except BadZipFile:
         print(f"Invalid or corrupted file: {url}")
