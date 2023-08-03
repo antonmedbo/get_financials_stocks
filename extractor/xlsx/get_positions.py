@@ -24,10 +24,20 @@ def quarters(workbook):
 
 def metrics(company, workbook):
 
+    row_positions = {}
 
     with open("/Users/antonmedboprivat/python/extract_financial_data/config/conversion_income_statements.json") as json_file:
         conversion = json.load(json_file)
         
-    print(conversion)
+    df = pd.read_excel(workbook, engine='openpyxl')
 
+    df_lower = df.applymap(lambda s: s.lower() if type(s) == str else s)
+    
+    for key, item in conversion.get(company).items():
+        if len(key) > 2:
+            row_index = df_lower[df_lower.eq(key).any(axis=1)].index.tolist()
+            if item not in row_positions:
+                row_positions[item] = row_index[0]
+    return row_positions
+        
     

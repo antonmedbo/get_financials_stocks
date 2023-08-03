@@ -9,7 +9,7 @@ from scraper.ABB_scraper import get_excel_files
 from scraper.links.excel import get_data_from_xlsx
 import json
 from datetime import datetime
-from insert_into_postgres.insert import add_financial_statement
+from insert_into_postgres.insert import df_to_postgres
 
 # Load company configuration
 with open("config/config.json") as config_file:
@@ -26,16 +26,6 @@ for company, config in configs.items():
             url = link_xlsx['href']
             year = url_year(url)
 
-            test = get_data_from_xlsx(url, company, config, year)
+            income_statements_dataframe = get_data_from_xlsx(url, company, config, year)
 
-
-
-# def datetime_converter(o):
-#     if isinstance(o, datetime):
-#         return o.isoformat()
-    
-# # Use json.dump to write data to a json file
-# with open('data.json', 'w') as f:
-#     json.dump(list_income_statements, f, default=datetime_converter, indent=4)
-
-# add_financial_statement(list_income_statements)
+            df_to_postgres(income_statements_dataframe, 'income_statements', 'postgresql://postgres:OmxPassword@localhost:5432/postgres')
