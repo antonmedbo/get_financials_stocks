@@ -1,10 +1,12 @@
 import openpyxl
 import psycopg2
 from utils.check import get_date, three_months, which_metric, get_multiplier
+from utils.from_url import url_year
 from pprint import pprint
 from utils.check_document_name import year_from_name
 from scraper.links_react import get_links_from_react_page
 from scraper.ABB_scraper import get_excel_files
+from scraper.links.excel import get_data_from_xlsx
 import json
 from datetime import datetime
 from insert_into_postgres.insert import add_financial_statement
@@ -17,9 +19,17 @@ with open("config/config.json") as config_file:
 for company, config in configs.items():
     if config.get("skip") == False:
         print(f"Getting data for {company}...")
-        # list_income_statements = get_excel_files(config)
         links_xlsx = get_links_from_react_page(config)
-        print(links_xlsx)
+
+        for link_xlsx in links_xlsx:
+
+            url = link_xlsx['href']
+            year = url_year(url)
+
+            test = get_data_from_xlsx(url, company, config, year)
+
+
+
 # def datetime_converter(o):
 #     if isinstance(o, datetime):
 #         return o.isoformat()
