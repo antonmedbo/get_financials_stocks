@@ -24,8 +24,7 @@ for company, config in configs.items():
         for link_xlsx in links_xlsx:
 
             url = link_xlsx['href']
-            year = url_year(url)
 
-            income_statements_dataframe = get_data_from_xlsx(url, company, config, year)
+            income_statements_dataframe = get_data_from_xlsx(url, company, config)
 
             df_to_postgres(income_statements_dataframe, 'income_statements', 'postgresql://postgres:OmxPassword@localhost:5432/postgres')
