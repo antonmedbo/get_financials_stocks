@@ -24,7 +24,7 @@ def get_links_from_react_page(company_config):
     # Create new instance of chrome
     driver = webdriver.Chrome(service=webdriver_service, options=chrome_options)
 
-    url = 'https://www.alfalaval.se/investerare/publikationer/kvartalsinformation/'
+    url = company_config["results_url"]
 
     # get the page
     driver.get(url)
@@ -37,9 +37,9 @@ def get_links_from_react_page(company_config):
     # parse with BeautifulSoup
     soup = BeautifulSoup(html, 'html.parser')
 
-    pattern = re.compile(r'https://www.alfalaval.com/globalassets/documents/.*\.xlsx')
+    pattern = re.compile(company_config["pattern"])
 
-    links = soup.find_all('a', href=pattern)
+    links = soup.find_all(company_config['tag'], {company_config['attr']: pattern})
 
     # quit the driver
     driver.quit()
