@@ -1,13 +1,12 @@
-from pprint import pprint
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 import re
 
-
-def get_links_from_react_page(company_config):
+def get_links(company_config):
     # Automatically download and install chromedriver
     webdriver_path = ChromeDriverManager().install()
 
@@ -37,9 +36,14 @@ def get_links_from_react_page(company_config):
     # parse with BeautifulSoup
     soup = BeautifulSoup(html, 'html.parser')
 
-    pattern = re.compile(company_config["pattern"])
+    pattern = re.compile(company_config["link_pattern"], re.IGNORECASE)
 
-    links = soup.find_all(company_config['tag'], {company_config['attr']: pattern})
+    if company_config["method"] == "text":
+        def match_pattern(text):
+            return text and pattern.search(text) is not None
+        links = soup.find_all(company_config["tag_name"], text=match_pattern)
+    else:
+        links = soup.find_all(lambda tag: tag.name == company_config['tag_name'] and tag.get(company_config['attr']) and pattern.search(tag.get(company_config['attr'])) is not None)
 
     # quit the driver
     driver.quit()

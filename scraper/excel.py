@@ -18,11 +18,11 @@ def get_data_from_xlsx(url, company, config):
 
         index_quarters = quarters(workbook)
         
-        index_metrics = metrics(company, workbook)
+        # index_metrics = metrics(company, workbook)
 
-        income_statements_dataframe = from_sheet(company, index_quarters, index_metrics, workbook)
+        # income_statements_dataframe = from_sheet(company, index_quarters, index_metrics, workbook)
 
-        return income_statements_dataframe
+        # return income_statements_dataframe
     
     except BadZipFile:
         print(f"Invalid or corrupted file: {url}")

@@ -3,18 +3,19 @@
         "skip": false,
         "results_url": "https://global.abb/group/en/investors/quarterly-results",
         "base_url": "https://global.abb.com",
-        "link_pattern": "xlsx",
-        "tag_name": "a"
+        "link_pattern": ".*xlsx.*",
+        "tag_name": "a",
+        "attr": "href",
+        "method": "text"
     },
     "Alfa Laval": {
         "skip": true,
         "results_url": "https://www.alfalaval.se/investerare/publikationer/kvartalsinformation/",
         "base_url": "https://www.alfalaval.se",
-        "link_pattern": "https://www.alfalaval.com/globalassets/documents/",
-        "tag_name": "div",
-        "pattern": "https://www.alfalaval.com/globalassets/documents/.*\\.xlsx",
-        "tag": "a",
-        "attr": "href"
+        "link_pattern": "https://www.alfalaval.com/globalassets/documents/.*\\.xlsx",
+        "tag_name": "a",
+        "attr": "href",
+        "method": "attr"
     }
-}
 
+}
