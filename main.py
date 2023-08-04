@@ -22,4 +22,6 @@ for company, config in configs.items():
 
             income_statements_dataframe = get_data_from_xlsx(url, company, config)
 
+            break
+
             # df_to_postgres(income_statements_dataframe, 'income_statements', 'postgresql://postgres:OmxPassword@localhost:5432/postgres')

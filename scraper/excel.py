@@ -4,6 +4,7 @@ from openpyxl import load_workbook
 from zipfile import BadZipFile
 from extractor.xlsx.get_positions import quarters, metrics
 from extractor.xlsx.get_data import from_sheet
+from pprint import pprint
 
 def get_data_from_xlsx(url, company, config):
 
@@ -12,11 +13,14 @@ def get_data_from_xlsx(url, company, config):
 
     response = requests.get(url)
     content = response.content
+    print(url)
 
     try:
         workbook = load_workbook(filename=io.BytesIO(content))
 
         index_quarters = quarters(workbook)
+
+        pprint(index_quarters)
         
         # index_metrics = metrics(company, workbook)
 
